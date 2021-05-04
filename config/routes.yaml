@@ -1,3 +1,8 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+register:
+  path: /inscription
+  controller: App\Controller\RegistrationController::register
+#[Route('/register', name: 'app_register')]
