@@ -1,0 +1,2 @@
+# SnowTricks-Blog
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/48af7d8895af4e09b2ce41d79399b107)](https://app.codacy.com/gh/LeZellus/SnowTricks-Blog?utm_source=github.com&utm_medium=referral&utm_content=LeZellus/SnowTricks-Blog&utm_campaign=Badge_Grade_Settings)
