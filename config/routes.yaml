@@ -1,8 +1,12 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
-register:
+app_home:
+  path: /accueil
+  controller: App\Controller\HomeController::index
+app_register:
   path: /inscription
   controller: App\Controller\RegistrationController::register
-#[Route('/register', name: 'app_register')]
+app_login:
+  path: /connexion
+  controller: App\Controller\SecurityController::login
+app_logout:
+  path: /deconnexion
+  controller: App\Controller\SecurityController::logout
