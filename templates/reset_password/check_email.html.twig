@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email de réinitialisation | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 ">
+        <img src="{{ asset('favicon.svg') }}" alt="Snowboard icon" class="h-24">
+        <div class="max-w-md w-full space-y-8">
+            <p class="mt-8 text-center">
+                Un email vous a été envoyé, il contient un lien de réinitialisation de votre mot de passe.
+                Le lien expire
+                dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+            </p>
+            <p class="text-center">Si vous ne recevez pas l'email, vérifiez vos spams ou <a
+                        href="{{ path('app_forgot_password_request') }}">rééssayez</a>.</p>
+
+            <a href="{{ path('home') }}" class="group mt-8 relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                <!-- Heroicon name: solid/lock-closed -->
+                <svg  class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                  <path fill-rule="evenodd"
+                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                        clip-rule="evenodd"></path>
+                </svg>
+              </span>
+                Accueil
+            </a>
+        </div>
+    </div>
+{% endblock %}
