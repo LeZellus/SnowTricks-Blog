@@ -1,5 +1,5 @@
 app_home:
-  path: /accueil
+  path: /
   controller: App\Controller\HomeController::index
 app_register:
   path: /inscription
