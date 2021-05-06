@@ -22,22 +22,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $color;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Trick::class, mappedBy="categories")
-     */
-    private $tricks;
-
-    public function __construct()
-    {
-        $this->tricks = new ArrayCollection();
-    }
+    private $label;
 
     public function getId(): ?int
     {
@@ -46,51 +31,12 @@ class Category
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->label;
     }
 
-    public function setName(string $name): self
+    public function setName(string $label): self
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
-
-    public function setColor(string $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Trick[]
-     */
-    public function getTricks(): Collection
-    {
-        return $this->tricks;
-    }
-
-    public function addTrick(Trick $trick): self
-    {
-        if (!$this->tricks->contains($trick)) {
-            $this->tricks[] = $trick;
-            $trick->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTrick(Trick $trick): self
-    {
-        if ($this->tricks->removeElement($trick)) {
-            $trick->removeCategory($this);
-        }
+        $this->label = $label;
 
         return $this;
     }
