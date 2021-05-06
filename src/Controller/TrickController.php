@@ -3,16 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 #[Route('/trick')]
 class TrickController extends AbstractController
 {
+
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/', name: 'trick_index', methods: ['GET'])]
     public function index(TrickRepository $trickRepository): Response
     {
@@ -25,14 +35,24 @@ class TrickController extends AbstractController
     public function new(Request $request): Response
     {
         $trick = new Trick();
+
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
+        $user = $this->security->getUser();
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
             $trick->setUpdatedAt(new \DateTime());
             $trick->setCreatedAt(new \DateTime());
 
-            $entityManager = $this->getDoctrine()->getManager();
+            if (!$user instanceof \App\Entity\User) {
+                return new Response("FAUX");
+            }
+
+            $trick->setUser($user);
+
             $entityManager->persist($trick);
             $entityManager->flush();
 
@@ -74,7 +94,7 @@ class TrickController extends AbstractController
     #[Route('/{id}', name: 'trick_delete', methods: ['POST'])]
     public function delete(Request $request, Trick $trick): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$trick->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($trick);
             $entityManager->flush();
