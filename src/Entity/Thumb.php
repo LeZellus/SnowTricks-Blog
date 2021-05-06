@@ -26,12 +26,6 @@ class Thumb
      * @ORM\Column(type="string", length=255)
      */
     private $newName;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="thumbs")
-     */
-    private $trick;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -62,18 +56,6 @@ class Thumb
     public function setNewName(string $newName): self
     {
         $this->newName = $newName;
-
-        return $this;
-    }
-
-    public function getTrick(): ?Trick
-    {
-        return $this->trick;
-    }
-
-    public function setTrick(?Trick $trick): self
-    {
-        $this->trick = $trick;
 
         return $this;
     }

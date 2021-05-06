@@ -30,21 +30,6 @@ class Trick
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
-     */
-    private $videos;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="tricks")
-     */
-    private $categories;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Thumb::class, mappedBy="trick")
-     */
-    private $thumbs;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -53,19 +38,6 @@ class Trick
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Thumb::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $mainThumb;
-
-    public function __construct()
-    {
-        $this->videos = new ArrayCollection();
-        $this->categories = new ArrayCollection();
-        $this->thumbs = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -96,90 +68,6 @@ class Trick
         return $this;
     }
 
-    /**
-     * @return Collection|Video[]
-     */
-    public function getVideos(): Collection
-    {
-        return $this->videos;
-    }
-
-    public function addVideo(Video $video): self
-    {
-        if (!$this->videos->contains($video)) {
-            $this->videos[] = $video;
-            $video->setTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideo(Video $video): self
-    {
-        if ($this->videos->removeElement($video)) {
-            // set the owning side to null (unless already changed)
-            if ($video->getTrick() === $this) {
-                $video->setTrick(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Category[]
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Category $category): self
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): self
-    {
-        $this->categories->removeElement($category);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Thumb[]
-     */
-    public function getThumbs(): Collection
-    {
-        return $this->thumbs;
-    }
-
-    public function addThumb(Thumb $thumb): self
-    {
-        if (!$this->thumbs->contains($thumb)) {
-            $this->thumbs[] = $thumb;
-            $thumb->setTrick($this);
-        }
-
-        return $this;
-    }
-
-    public function removeThumb(Thumb $thumb): self
-    {
-        if ($this->thumbs->removeElement($thumb)) {
-            // set the owning side to null (unless already changed)
-            if ($thumb->getTrick() === $this) {
-                $thumb->setTrick(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -200,18 +88,6 @@ class Trick
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function getMainThumb(): ?Thumb
-    {
-        return $this->mainThumb;
-    }
-
-    public function setMainThumb(Thumb $mainThumb): self
-    {
-        $this->mainThumb = $mainThumb;
 
         return $this;
     }
