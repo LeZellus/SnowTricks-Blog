@@ -1,4 +1,12 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_label(form.name) }}
+    {{ form_widget(form.name) }}
+
+    {{ form_label(form.description) }}
+    {{ form_widget(form.description) }}
+
+    {{ form_label(form.videos.vars.prototype) }}
+    {{ form_widget(form.videos.vars.prototype) }}
+
+<button>{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
