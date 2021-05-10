@@ -6,6 +6,7 @@ use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=TrickRepository::class)
@@ -38,6 +39,12 @@ class Trick
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tricks", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function getId(): ?int
     {
@@ -88,6 +95,18 @@ class Trick
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
