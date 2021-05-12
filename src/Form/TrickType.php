@@ -24,9 +24,9 @@ class TrickType extends AbstractType
                 'entry_options' => [
                     'label' => false
                 ],
+                'label' => false,
                 'required' => false,
                 'prototype' => true,
-                'row_attr' => ['class' => 'text-red-400'],
             ])
         ;
     }
