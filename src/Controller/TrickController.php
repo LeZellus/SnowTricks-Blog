@@ -6,6 +6,7 @@ use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +33,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/new', name: 'trick_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploader $fileUploader): Response
     {
         $trick = new Trick();
 
@@ -46,6 +47,13 @@ class TrickController extends AbstractController
 
             $trick->setUpdatedAt(new \DateTime());
             $trick->setCreatedAt(new \DateTime());
+
+            $thumbFile = $form->get('thumb')->getData();
+
+            if ($thumbFile) {
+                $thumbFileName = $fileUploader->upload($thumbFile);
+                $trick->addThumbFileName($thumbFileName);
+            }
 
             if (!$user instanceof \App\Entity\User) {
                 return new Response("FAUX");

@@ -31,6 +31,12 @@ class Thumb
      */
     private $path;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="thumbFileName")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $trick;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +74,18 @@ class Thumb
     public function setPath(string $path): self
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
 
         return $this;
     }

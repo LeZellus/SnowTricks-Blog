@@ -51,9 +51,15 @@ class Trick
      */
     private $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Thumb::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
+     */
+    private $thumbFileName;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
+        $this->thumbFileName = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +151,36 @@ class Trick
             // set the owning side to null (unless already changed)
             if ($video->getTrick() === $this) {
                 $video->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Thumb[]
+     */
+    public function getThumbFileName(): Collection
+    {
+        return $this->thumbFileName;
+    }
+
+    public function addThumbFileName(Thumb $thumbFileName): self
+    {
+        if (!$this->thumbFileName->contains($thumbFileName)) {
+            $this->thumbFileName[] = $thumbFileName;
+            $thumbFileName->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThumbFileName(Thumb $thumbFileName): self
+    {
+        if ($this->thumbFileName->removeElement($thumbFileName)) {
+            // set the owning side to null (unless already changed)
+            if ($thumbFileName->getTrick() === $this) {
+                $thumbFileName->setTrick(null);
             }
         }
 
