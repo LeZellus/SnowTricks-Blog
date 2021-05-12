@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}SnowTricks, Blog communautaire{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SnowTricks, Blog communautaire{% endblock %}</title>
+    {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-            {{ encore_entry_link_tags('tailwind') }}
-        {% endblock %}
+    {% block stylesheets %}
+        {# {{ encore_entry_link_tags('app') }} #}
+        {{ encore_entry_link_tags('tailwind') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.svg') }}"/>
-    </head>
-    <body>
-        <header>
-            {{ include('navigation/navbar.html.twig') }}
-        </header>
-        {% block body %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.svg') }}"/>
+</head>
+<body>
 
-        {% endblock %}
-    </body>
+{% for label, messages in app.flashes(['success', 'error']) %}
+    {% for message in messages %}
+        <div class="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md fixed bottom-4 left-4">
+            <div class="flex items-center justify-center w-12 bg-{{ label }}-500">
+                <svg class="w-6 h-6 text-white fill-current" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM16.6667 28.3333L8.33337 20L10.6834 17.65L16.6667 23.6166L29.3167 10.9666L31.6667 13.3333L16.6667 28.3333Z"/>
+                </svg>
+            </div>
+
+            <div class="px-4 py-2 -mx-3">
+                <div class="mx-3">
+                    <span class="font-semibold text-{{ label }}-500">{{ label }}</span>
+                    <p class="text-sm text-gray-600">{{ message }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<header>
+    {{ include('navigation/navbar.html.twig') }}
+</header>
+{% block body %}
+
+{% endblock %}
+</body>
 </html>
