@@ -1,11 +1,13 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700;800&display=swap');
 
 @layer utilities {
   .bg-success-500{
     @apply bg-green-500;
   }
+
   .bg-error-500{
     @apply bg-green-500;
   }
