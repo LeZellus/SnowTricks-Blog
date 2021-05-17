@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -52,14 +53,20 @@ class Trick
     private $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Thumb::class, mappedBy="trick", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Thumb::class, mappedBy="trick", cascade={"persist"})
+     * @ORM\JoinTable(name="trick_thumb",
+     *  joinColumns={@ORM\JoinColumn(name="trick_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="thumb_id", referencedColumnName="id")}
+     * )
      */
-    private $thumbFileName;
+    private Collection $thumbs;
 
     public function __construct()
     {
         $this->videos = new ArrayCollection();
-        $this->thumbFileName = new ArrayCollection();
+        $this->createdAt = new DateTime();
+        $this->updatedAt = new DateTime();
+        $this->thumbs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,27 +167,27 @@ class Trick
     /**
      * @return Collection|Thumb[]
      */
-    public function getThumbFileName(): Collection
+    public function getThumbs(): Collection
     {
-        return $this->thumbFileName;
+        return $this->thumbs;
     }
 
-    public function addThumbFileName(Thumb $thumbFileName): self
+    public function addThumb(Thumb $thumb): self
     {
-        if (!$this->thumbFileName->contains($thumbFileName)) {
-            $this->thumbFileName[] = $thumbFileName;
-            $thumbFileName->setTrick($this);
+        if (!$this->thumbs->contains($thumb)) {
+            $this->thumbs[] = $thumb;
+            $thumb->setTrick($this);
         }
 
         return $this;
     }
 
-    public function removeThumbFileName(Thumb $thumbFileName): self
+    public function removeThumb(Thumb $thumb): self
     {
-        if ($this->thumbFileName->removeElement($thumbFileName)) {
+        if ($this->thumbs->removeElement($thumb)) {
             // set the owning side to null (unless already changed)
-            if ($thumbFileName->getTrick() === $this) {
-                $thumbFileName->setTrick(null);
+            if ($thumb->getTrick() === $this) {
+                $thumb->setTrick(null);
             }
         }
 

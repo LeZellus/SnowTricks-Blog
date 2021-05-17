@@ -25,7 +25,7 @@
                         {{ form_label(form.videos, "Vidéos", {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
                         {{ form_errors(form.videos) }}
 
-                        <ul class="tags" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+                        <ul class="videos" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
                             {% for video in form.videos %}
                                 <li>
                                     {{ form_label(video) }}
@@ -33,16 +33,36 @@
                                 </li>
                             {% endfor %}
                         </ul>
+                        <button type="button" class="add_video" data-collection-holder-class="videos">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="col-span-6 sm:col-span-3">
+                        {{ form_label(form.thumbs, "Images", {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                        {{ form_errors(form.thumbs) }}
+
+                        <ul class="images" data-prototype="{{ form_widget(form.thumbs.vars.prototype)|e('html_attr') }}">
+                            {% for thumb in form.thumbs %}
+                                <li>
+                                    {{ form_label(thumb) }}
+                                    {{ form_widget(thumb) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="add_image" data-collection-holder-class="images">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                <button type="button" class="add_item_link" data-collection-holder-class="tags">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </button>
 
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">

@@ -6,7 +6,7 @@ use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
-use App\Service\FileUploader;
+use App\Service\FileUploadServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\Security;
 class TrickController extends AbstractController
 {
 
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
@@ -33,7 +33,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/new', name: 'trick_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FileUploader $fileUploader): Response
+    public function new(Request $request, FileUploadServiceInterface $fileUploader): Response
     {
         $trick = new Trick();
 
@@ -45,14 +45,15 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $trick->setUpdatedAt(new \DateTime());
-            $trick->setCreatedAt(new \DateTime());
+            try{
+                $thumbFileForm = $form->get('thumbs')->getData();
 
-            $thumbFile = $form->get('thumb')->getData();
+                if ($thumbFileForm) {
+                    $thumbFile = $fileUploader->upload($thumbFileForm);
+                    $trick->addThumb($thumbFile);
+                }
+            }catch (\Exception $e){
 
-            if ($thumbFile) {
-                $thumbFileName = $fileUploader->upload($thumbFile);
-                $trick->addThumbFileName($thumbFileName);
             }
 
             if (!$user instanceof \App\Entity\User) {

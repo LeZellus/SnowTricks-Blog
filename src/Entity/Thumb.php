@@ -20,20 +20,20 @@ class Thumb
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $oldName;
+    private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer")
      */
-    private $newName;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $path;
+    private $size;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="thumbFileName")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isMain;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="thumbs", cascade={"persist"})
      */
     private $trick;
 
@@ -42,38 +42,51 @@ class Thumb
         return $this->id;
     }
 
-    public function getOldName(): ?string
+    public function getName(): ?string
     {
-        return $this->oldName;
+        return $this->name;
     }
 
-    public function setOldName(string $oldName): self
+    public function setName(string $name): self
     {
-        $this->oldName = $oldName;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getNewName(): ?string
+    /**
+     * @return int
+     */
+    public function getSize(): int
     {
-        return $this->newName;
+        return $this->size;
     }
 
-    public function setNewName(string $newName): self
+    /**
+     * @param int $size
+     * @return $this
+     */
+    public function setSize(int $size): self
     {
-        $this->newName = $newName;
-
+        $this->size = $size;
         return $this;
     }
 
-    public function getPath(): ?string
+    /**
+     * @return ?boolean
+     */
+    public function getIsMain(): ?bool
     {
-        return $this->path;
+        return $this->isMain;
     }
 
-    public function setPath(string $path): self
+    /**
+     * @param bool $isMain
+     * @return $this
+     */
+    public function setIsMain(bool $isMain): self
     {
-        $this->path = $path;
+        $this->$isMain = $isMain;
 
         return $this;
     }
@@ -83,6 +96,10 @@ class Thumb
         return $this->trick;
     }
 
+    /**
+     * @param Trick|null $trick
+     * @return $this
+     */
     public function setTrick(?Trick $trick): self
     {
         $this->trick = $trick;
