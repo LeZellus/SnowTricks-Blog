@@ -78,16 +78,26 @@ class User implements UserInterface
         $this->tricks = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -117,6 +127,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -132,6 +146,10 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -164,6 +182,10 @@ class User implements UserInterface
         return $this->firstname;
     }
 
+    /**
+     * @param string $firstname
+     * @return $this
+     */
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
@@ -171,11 +193,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
+    /**
+     * @param string $lastname
+     * @return $this
+     */
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
@@ -183,11 +212,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getPseudonyme(): ?string
     {
         return $this->pseudonyme;
     }
 
+    /**
+     * @param string $pseudonyme
+     * @return $this
+     */
     public function setPseudonyme(string $pseudonyme): self
     {
         $this->pseudonyme = $pseudonyme;
@@ -195,11 +231,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isVerified(): bool
     {
         return $this->isVerified;
     }
 
+    /**
+     * @param bool $isVerified
+     * @return $this
+     */
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
@@ -215,6 +258,10 @@ class User implements UserInterface
         return $this->tricks;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function addTrick(Trick $trick): self
     {
         if (!$this->tricks->contains($trick)) {
@@ -225,6 +272,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->removeElement($trick)) {
@@ -237,11 +288,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Address|null
+     */
     public function getAddress(): ?Address
     {
         return $this->address;
     }
 
+    /**
+     * @param Address|null $address
+     * @return $this
+     */
     public function setAddress(?Address $address): self
     {
         // unset the owning side of the relation if necessary
@@ -259,11 +317,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Thumb|null
+     */
     public function getThumb(): ?Thumb
     {
         return $this->thumb;
     }
 
+    /**
+     * @param Thumb|null $thumb
+     * @return $this
+     */
     public function setThumb(?Thumb $thumb): self
     {
         $this->thumb = $thumb;
