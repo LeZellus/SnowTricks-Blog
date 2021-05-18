@@ -4,8 +4,15 @@
 
 {% block body %}
     <div class="relative">
-        <div class="h-96 bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1507281736509-c6289f1ea0f8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80')"></div>
-        <img class="transform -translate-x-1/2 left-1/2 absolute top-72 rounded-full border-8 border-white w-48 h-48" src="https://thispersondoesnotexist.com/image" alt="Portrait">
+        <div class="h-96 bg-center bg-cover"
+             style="background-image: url('https://images.unsplash.com/photo-1507281736509-c6289f1ea0f8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80')"></div>
+        {% if address == null %}
+            <div class="transform bg-cover bg-center -translate-x-1/2 left-1/2 absolute top-72 rounded-full border-8 border-white w-48 h-48"
+                 style="background-image: url('https://thispersondoesnotexist.com/')"></div>
+        {% else %}
+            <div class="transform bg-cover bg-center -translate-x-1/2 left-1/2 absolute top-72 rounded-full border-8 border-white w-48 h-48"
+                 style="background-image: url('{{ asset('uploads/profil_thumb/' ~ app.user.pseudonyme ~ '/' ~ thumb.newname) }}')"></div>
+        {% endif %}
     </div>
     <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 mt-28">
         <h1 class="my-8 text-center text-3xl font-extrabold text-gray-900">
@@ -18,10 +25,11 @@
                         Informations générales
                     </h2>
                     <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                        Données personnelles
+                        Données publiques
                     </p>
                 </div>
-                <a href="#" class="ml-auto inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Éditer</a>
+                <a href="{{ path('profil_edit') }}"
+                   class="ml-auto inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Éditer</a>
             </div>
             <div class="border-t border-gray-200">
                 <dl>

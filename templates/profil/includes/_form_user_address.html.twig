@@ -1,0 +1,31 @@
+{{ form_start(formUpdateAddress) }}
+<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium flex items-center text-gray-500">
+        {{ form_label(formUpdateAddress.postalcode) }}
+    </dt>
+    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+        {{ form_widget(formUpdateAddress.postalcode, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+    </dd>
+</div>
+
+<div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium flex items-center text-gray-500">
+        {{ form_label(formUpdateAddress.city) }}
+    </dt>
+    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+        {{ form_widget(formUpdateAddress.city, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+    </dd>
+</div>
+
+<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium flex items-center text-gray-500">
+        {{ form_label(formUpdateAddress.street) }}
+    </dt>
+    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+        {{ form_widget(formUpdateAddress.street, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+    </dd>
+</div>
+
+{{ form_row(formUpdateAddress.submit, { 'label': 'Enregistrer'}) }}
+
+{{ form_end(formUpdateAddress) }}
