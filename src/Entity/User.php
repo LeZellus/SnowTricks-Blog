@@ -63,6 +63,16 @@ class User implements UserInterface
      */
     private $tricks;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Address::class, mappedBy="User", cascade={"persist", "remove"})
+     */
+    private $address;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Thumb::class, cascade={"persist", "remove"})
+     */
+    private $thumb;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -198,7 +208,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Trick[]
+     * @return Collection
      */
     public function getTricks(): Collection
     {
@@ -223,6 +233,40 @@ class User implements UserInterface
                 $trick->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($address === null && $this->address !== null) {
+            $this->address->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($address !== null && $address->getUser() !== $this) {
+            $address->setUser($this);
+        }
+
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getThumb(): ?Thumb
+    {
+        return $this->thumb;
+    }
+
+    public function setThumb(?Thumb $thumb): self
+    {
+        $this->thumb = $thumb;
 
         return $this;
     }
