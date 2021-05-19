@@ -37,16 +37,26 @@ class Address
      */
     private $User;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return int|null
+     */
     public function getPostalcode(): ?int
     {
         return $this->postalcode;
     }
 
+    /**
+     * @param int|null $postalcode
+     * @return $this
+     */
     public function setPostalcode(?int $postalcode): self
     {
         $this->postalcode = $postalcode;
@@ -54,11 +64,18 @@ class Address
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
+    /**
+     * @param string $city
+     * @return $this
+     */
     public function setCity(string $city): self
     {
         $this->city = $city;
@@ -66,11 +83,18 @@ class Address
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getStreet(): ?string
     {
         return $this->street;
     }
 
+    /**
+     * @param string|null $street
+     * @return $this
+     */
     public function setStreet(?string $street): self
     {
         $this->street = $street;
@@ -78,11 +102,18 @@ class Address
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->User;
     }
 
+    /**
+     * @param User|null $User
+     * @return $this
+     */
     public function setUser(?User $User): self
     {
         $this->User = $User;
@@ -90,7 +121,11 @@ class Address
         return $this;
     }
 
-    public function __toString() {
-        return $this->street;
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->street . ', ' . $this->city . ', ' . $this->postalcode;
     }
 }

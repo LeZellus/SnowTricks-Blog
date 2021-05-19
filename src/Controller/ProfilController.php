@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfilController extends AbstractController
@@ -18,13 +19,7 @@ class ProfilController extends AbstractController
     #[Route('/profil', name: 'profil_index')]
     public function index(): Response
     {
-        $userAddress = $this->getUser()->getAddress();
-        $userThumb = $this->getUser()->getThumb();
-
-        return $this->render('profil/index.html.twig', [
-            'address' => $userAddress,
-            'thumb' => $userThumb,
-        ]);
+        return $this->render('profil/index.html.twig');
     }
 
     #[Route('/profil/editer', name: 'profil_edit')]
@@ -94,5 +89,28 @@ class ProfilController extends AbstractController
             'formUpdateAddress' => $formUpdateAddress->createView(),
             'formUpdateThumb' => $formUpdateThumb->createView(),
         ));
+    }
+
+
+    /**
+     * @return Response
+     */
+    #[Route('/profil/supprimer', name: 'profil_remove')]
+    public function remove(): Response
+    {
+        $user = $this->getUser();
+
+        if ($user) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            $session = new Session();
+            $session->invalidate();
+
+            return $this->redirectToRoute('app_logout');
+        }
+
+        return $this->redirectToRoute("app_login");
     }
 }
