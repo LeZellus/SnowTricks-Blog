@@ -6,9 +6,10 @@
     <div class="relative">
         <div class="h-96 bg-center bg-cover"
              style="background-image: url('https://images.unsplash.com/photo-1507281736509-c6289f1ea0f8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80')"></div>
-        {% if address == null %}
+        {% if app.user.thumb == null %}
             <div class="transform bg-cover bg-center -translate-x-1/2 left-1/2 absolute top-72 rounded-full border-8 border-white w-48 h-48"
-                 style="background-image: url('https://thispersondoesnotexist.com/')"></div>
+                 style="background-image: url('{{ asset('uploads/app/snowboarder.svg') }}')"></div>
+            <img src="https://thispersondoesnotexist.com/" alt="" class="h-6 w-6">
         {% else %}
             <div class="transform bg-cover bg-center -translate-x-1/2 left-1/2 absolute top-72 rounded-full border-8 border-white w-48 h-48"
                  style="background-image: url('{{ asset('uploads/profil_thumb/' ~ app.user.pseudonyme ~ '/' ~ thumb.newname) }}')"></div>
@@ -62,34 +63,10 @@
                             Adresse postale
                         </dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {% if address == null %}
+                            {% if app.user.address == null %}
                                 Non renseigné
                             {% else %}
-                                {{ address.street }}
-                            {% endif %}
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Code postal
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {% if address == null %}
-                                Non renseigné
-                            {% else %}
-                                {{ address.postalcode }}
-                            {% endif %}
-                        </dd>
-                    </div>
-                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            Ville
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {% if address == null %}
-                                Non renseigné
-                            {% else %}
-                                {{ address.city }}
+                                {{ app.user.address }}
                             {% endif %}
                         </dd>
                     </div>

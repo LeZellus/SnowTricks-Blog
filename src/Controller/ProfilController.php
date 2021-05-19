@@ -18,13 +18,7 @@ class ProfilController extends AbstractController
     #[Route('/profil', name: 'profil_index')]
     public function index(): Response
     {
-        $userAddress = $this->getUser()->getAddress();
-        $userThumb = $this->getUser()->getThumb();
-
-        return $this->render('profil/index.html.twig', [
-            'address' => $userAddress,
-            'thumb' => $userThumb,
-        ]);
+        return $this->render('profil/index.html.twig');
     }
 
     #[Route('/profil/editer', name: 'profil_edit')]
