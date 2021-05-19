@@ -1,0 +1,31 @@
+{{ form_start(formUpdateUser) }}
+<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium flex items-center text-gray-500">
+        {{ form_label(formUpdateUser.lastname) }}
+    </dt>
+    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+        {{ form_widget(formUpdateUser.lastname, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+    </dd>
+</div>
+
+<div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium flex items-center text-gray-500">
+        {{ form_label(formUpdateUser.firstname) }}
+    </dt>
+    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+        {{ form_widget(formUpdateUser.firstname, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+    </dd>
+</div>
+
+<div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+    <dt class="text-sm font-medium flex items-center text-gray-500">
+        {{ form_label(formUpdateUser.pseudonyme) }}
+    </dt>
+    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+        {{ form_widget(formUpdateUser.pseudonyme, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+    </dd>
+</div>
+
+{{ form_row(formUpdateUser.submit, { 'label': 'Enregistrer'}) }}
+
+{{ form_end(formUpdateUser) }}

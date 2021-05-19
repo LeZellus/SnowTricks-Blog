@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     image_directory: 'uploads/images/'
+    profil_thumb: '%kernel.project_dir%/public/uploads/profil_thumb/'
 
 services:
     # default configuration for services in *this* file

@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer profil | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <h1 class="my-8 text-center text-3xl font-extrabold text-gray-900">
+            Editer profil
+        </h1>
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+                <div>
+                    <h2 class="text-lg leading-6 font-medium text-gray-900">
+                        Informations générales
+                    </h2>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        Données publiques
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    {{ include('profil/includes/_form_user_info.html.twig') }}
+                </dl>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="py-8">
+                <div class="border-t border-gray-200"></div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+                <div>
+                    <h2 class="text-lg leading-6 font-medium text-gray-900">
+                        Addresse
+                    </h2>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        Votre adresse d'habitation
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    {{ include('profil/includes/_form_user_address.html.twig') }}
+                </dl>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="py-8">
+                <div class="border-t border-gray-200"></div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+                <div>
+                    <h2 class="text-lg leading-6 font-medium text-gray-900">
+                        Photo de profil
+                    </h2>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        Modifiez la façon dont les autres vous voient
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    {{ include('profil/includes/_form_user_thumb.html.twig') }}
+                </dl>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="py-8">
+                <div class="border-t border-gray-200"></div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6 flex items-center">
+                <div>
+                    <h2 class="text-lg leading-6 font-medium text-gray-900">
+                        Suppression de compte
+                    </h2>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                        Section dangereuse, prenez-garde
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-200">
+                <dl>
+                    <div class="bg-gray-50 px-4 py-5 sm:px-6">
+                        <a href="{{ path('profil_remove') }}"
+                           class="my-5 mr-6 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-400 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Supprimer
+                            mon compte</a>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </section>
+{% endblock %}
