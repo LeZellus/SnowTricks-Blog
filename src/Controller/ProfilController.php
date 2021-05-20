@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Form\AddressType;
 use App\Form\ProfilThumbType;
 use App\Form\UserInfoType;
@@ -46,6 +47,12 @@ class ProfilController extends AbstractController
         }
 
         if ($formUpdateAddress->isSubmitted() && $formUpdateAddress->isValid()) {
+            if (!$address) {
+                $address = new Address();
+            }
+            $em->persist($address);
+
+            $user->setAddress($address);
             $em->persist($user);
             $em->flush();
 
