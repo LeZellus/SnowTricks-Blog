@@ -1,33 +1,19 @@
 // add-collection-widget.js
 var $ = require('jQuery');
 
-$(document).ready(function() {
-    // Get the ul that holds the collection of tags
-    $collectionHolder = $('ul.tags');
+function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormButton = $('<button type="button" class="text-red-400 text-sm">Retirer</button>');
+    $tagFormLi.append($removeFormButton);
 
-    // add a delete link to all of the existing tag form li elements
-    $collectionHolder.find('li').each(function() {
-        addTagFormDeleteLink($(this));
+    $removeFormButton.on('click', function(e) {
+        // remove the li for the tag form
+        $tagFormLi.remove();
     });
-
-    // Get the ul that holds the collection of tags
-    var $tagsCollectionHolder = $('ul.tags');
-    // count the current form inputs we have (e.g. 2), use that as the new
-    // index when inserting a new item (e.g. 2)
-    $tagsCollectionHolder.data('index', $tagsCollectionHolder.find('input').length);
-
-    $('body').on('click', '.add_item_link', function(e) {
-        var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
-        // add a new tag form (see next code block)
-        addFormToCollection($collectionHolderClass);
-    })
-});
+}
 
 function addFormToCollection($collectionHolderClass) {
     // Get the ul that holds the collection of tags
     var $collectionHolder = $('.' + $collectionHolderClass);
-
-    console.log($collectionHolder);
 
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
@@ -55,12 +41,23 @@ function addFormToCollection($collectionHolderClass) {
     addTagFormDeleteLink($newFormLi);
 }
 
-function addTagFormDeleteLink($tagFormLi) {
-    var $removeFormButton = $('<button type="button" class="text-red-400 text-sm">Retirer</button>');
-    $tagFormLi.append($removeFormButton);
+$(document).ready(function() {
+    // Get the ul that holds the collection of tags
+    var $collectionHolder = $('ul.tags');
 
-    $removeFormButton.on('click', function(e) {
-        // remove the li for the tag form
-        $tagFormLi.remove();
+    // add a delete link to all of the existing tag form li elements
+    $collectionHolder.find('li').each(function() {
+        addTagFormDeleteLink($(this));
     });
-}
+
+    // Get the ul that holds the collection of tags
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $collectionHolder.data('index', $collectionHolder.find('input').length);
+
+    $('body').on('click', '.add_item_link', function(e) {
+        var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+        // add a new tag form (see next code block)
+        addFormToCollection($collectionHolderClass);
+    });
+});
