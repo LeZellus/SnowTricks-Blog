@@ -69,7 +69,7 @@ class User implements UserInterface
     private $address;
 
     /**
-     * @ORM\OneToOne(targetEntity=Thumb::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Thumb::class, cascade={"persist", "remove"}, inversedBy="user")
      */
     private $thumb;
 

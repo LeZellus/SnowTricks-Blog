@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Address;
-use App\Entity\Thumb;
 use App\Form\AddressType;
 use App\Form\ProfilThumbType;
 use App\Form\UserInfoType;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use App\Service\FileUploaderServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,14 +21,13 @@ class ProfilController extends AbstractController
     }
 
     #[Route('/profil/editer', name: 'profil_edit')]
-    public function edit(Request $request): Response
+    public function edit(Request $request, FileUploaderServiceInterface $fileUploaderService): Response
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $address = $user->getAddress();
         $thumb = $user->getThumb();
 
-        /* Manage user info */
         $formUpdateUser = $this->createForm(UserInfoType::class, $user);
         $formUpdateUser->handleRequest($request);
 
@@ -57,26 +54,13 @@ class ProfilController extends AbstractController
         }
 
         if ($formUpdateThumb->isSubmitted() && $formUpdateThumb->isValid()) {
-            $thumb = new Thumb();
-            $file = $formUpdateThumb->get('thumb')->getData();
-            $newFileName = uniqid() . '.' . $file->guessExtension();
+            $uploadedFile = $formUpdateThumb->get('thumb')->getData();
 
-            try {
-                $file->move(
-                    $this->getParameter('profil_thumb'). $user->getPseudonyme(),
-                    $newFileName
-                );
-
-                $thumb->setPath($newFileName);
-                $thumb->setOldName(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
-                $thumb->setNewName($newFileName);
-
-            } catch (FileException $e) {
-                return new Response($e->getMessage());
+            if($uploadedFile){
+                $thumb = $fileUploaderService->profilThumb($uploadedFile, $user);
             }
 
             $user->setThumb($thumb);
-
             $em->persist($user);
             $em->flush();
 

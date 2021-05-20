@@ -29,7 +29,7 @@ class Thumb
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $path;
+    private $type;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="thumb", cascade={"persist", "remove"})
@@ -65,14 +65,14 @@ class Thumb
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getType(): ?string
     {
-        return $this->path;
+        return $this->type;
     }
 
-    public function setPath(string $path): self
+    public function setType(string $type): self
     {
-        $this->path = $path;
+        $this->type = $type;
 
         return $this;
     }
@@ -97,5 +97,10 @@ class Thumb
         $this->user = $user;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->newName;
     }
 }
