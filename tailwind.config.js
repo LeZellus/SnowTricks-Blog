@@ -1,5 +1,10 @@
 module.exports = {
-    purge: [],
+    mode: 'jit',
+    purge: [
+        './templates/**/*.html.twig',
+        './assets/**/*.css',
+        './assets/**/*.scss',
+    ],
     darkMode: false, // or 'media' or 'class'
     theme: {
         extend: {
@@ -13,5 +18,6 @@ module.exports = {
     },
     plugins: [
         require("@tailwindcss/forms"),
+        require('@tailwindcss/jit'),
     ],
 };

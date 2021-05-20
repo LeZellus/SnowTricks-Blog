@@ -12,10 +12,10 @@
                      @keydown.escape.stop="open = false; focusButton()" @click.away="onClickAway($event)"
                      class="ml-3 flex items-center relative">
                     <a href="{{ path('app_home') }}"
-                       class="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                       class="ml-2 text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                        x-state-description="undefined: &quot;bg-gray-900 text-white&quot;, undefined: &quot;text-gray-900 hover:bg-gray-700 hover:text-white&quot;">Accueil</a>
                     <a href="{{ path('trick_index') }}"
-                       class="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                       class="ml-2 text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                        x-state-description="undefined: &quot;bg-gray-900 text-white&quot;, undefined: &quot;text-gray-900 hover:bg-gray-700 hover:text-white&quot;">Tricks</a>
                     {% if app.user %}
                         <!-- Profile dropdown -->
@@ -53,12 +53,12 @@
 
                         </div>
                     {% else %}
-                        <a href="{{ path('app_register') }}"
-                           class="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                           x-state-description="undefined: &quot;bg-gray-900 text-white&quot;, undefined: &quot;text-gray-900 hover:bg-gray-700 hover:text-white&quot;">Inscription</a>
                         <a href="{{ path('app_login') }}"
-                           class="text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                           class="ml-2 text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                            x-state-description="undefined: &quot;bg-gray-900 text-white&quot;, undefined: &quot;text-gray-900 hover:bg-gray-700 hover:text-white&quot;">Connexion</a>
+                        <a href="{{ path('app_register') }}"
+                           class="my-5 ml-2 mr-6 inline-flex justify-center py-2 px-3 shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                           x-state-description="undefined: &quot;bg-gray-900 text-white&quot;, undefined: &quot;text-gray-900 hover:bg-gray-700 hover:text-white&quot;">Inscription</a>
                     {% endif %}
 
                 </div>
