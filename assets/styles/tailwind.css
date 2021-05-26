@@ -14,10 +14,14 @@
   }
 
   .text-success-500 {
-    @apply text-green-500
+    @apply text-green-500;
   }
 
   .text-error-500 {
-    @apply text-red-500
+    @apply text-red-500;
   }
+}
+
+.text-shadow{
+  text-shadow: -15px 5px 20px #888888;
 }
