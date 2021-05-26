@@ -1,3 +1,5 @@
+import './js/snowstorm';
+
 // add-collection-widget.js
 var $ = require('jQuery');
 
