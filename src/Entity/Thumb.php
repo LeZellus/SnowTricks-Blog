@@ -20,22 +20,16 @@ class Thumb
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $oldName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $size;
-
+    private $newName;
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
-    private $isMain;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="thumbs", cascade={"persist"})
-     */
-    private $trick;
+    private $type;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="thumb", cascade={"persist", "remove"})
@@ -47,67 +41,38 @@ class Thumb
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getOldName(): ?string
     {
-        return $this->name;
+        return $this->oldName;
     }
 
-    public function setName(string $name): self
+    public function setOldName(string $oldName): self
     {
-        $this->name = $name;
+        $this->oldName = $oldName;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getSize(): int
+    public function getNewName(): ?string
     {
-        return $this->size;
+        return $this->newName;
     }
 
-    /**
-     * @param int $size
-     * @return $this
-     */
-    public function setSize(int $size): self
+    public function setNewName(string $newName): self
     {
-        $this->size = $size;
-        return $this;
-    }
-
-    /**
-     * @return ?boolean
-     */
-    public function getIsMain(): ?bool
-    {
-        return $this->isMain;
-    }
-
-    /**
-     * @param bool $isMain
-     * @return $this
-     */
-    public function setIsMain(bool $isMain): self
-    {
-        $this->$isMain = $isMain;
+        $this->newName = $newName;
 
         return $this;
     }
 
-    public function getTrick(): ?Trick
+    public function getType(): ?string
     {
-        return $this->trick;
+        return $this->type;
     }
 
-    /**
-     * @param Trick|null $trick
-     * @return $this
-     */
-    public function setTrick(?Trick $trick): self
+    public function setType(string $type): self
     {
-        $this->trick = $trick;
+        $this->type = $type;
 
         return $this;
     }
@@ -132,5 +97,10 @@ class Thumb
         $this->user = $user;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->newName;
     }
 }

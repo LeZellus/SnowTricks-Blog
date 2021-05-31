@@ -1,40 +1,44 @@
 <?php
 
+
 namespace App\Service;
 
 use App\Entity\Thumb;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
-class FileUploaderService implements FileUploadServiceInterface
+class FileUploaderService implements FileUploaderServiceInterface
 {
     private string $targetDirectory;
-    private SluggerInterface $slugger;
 
-    public function __construct(string $targetDirectory, SluggerInterface $slugger)
+    public function __construct(string $targetDirectory)
     {
         $this->targetDirectory = $targetDirectory;
-        $this->slugger = $slugger;
     }
 
-    public function upload($file): Thumb
+    public function profilThumb(UploadedFile $file, $user): Thumb
     {
-        try {
-            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $this->slugger->slug($originalFilename);
-
-            $fileName = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
-            $file->move($this->getTargetDirectory(), $fileName);
-
+        if (!$user->getThumb()) {
             $thumb = new Thumb();
-            $thumb->setName($fileName);
-            $thumb->setSize(filesize($this->getTargetDirectory() . $fileName));
-
-            return $thumb;
-        } catch (FileException $e) {
-            throw new FileException();
+        } else {
+            $thumb = $user->getThumb();
         }
+
+        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $fileName = 'avatar.' . $file->guessExtension();
+        $type = $file->getClientOriginalExtension();
+
+        try {
+            $file->move($this->getTargetDirectory() . $user->getId(), $fileName);
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
+
+        $thumb->setOldName($originalFilename);
+        $thumb->setNewName($fileName);
+        $thumb->setType($type);
+
+        return $thumb;
     }
 
     public function getTargetDirectory(): string
