@@ -20,14 +20,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     window.onscroll = function (e) {
-        var $backButton = document.querySelector('.back-button')
+        var $backButton = document.querySelector('.back-button');
         // called when the window is scrolled.
-        if(document.body.scrollTop > 800 || document.documentElement.scrollTop > 800){
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
             $backButton.classList.add('block');
             $backButton.classList.remove('hidden');
-        } else{
+        } else {
             $backButton.classList.add('hidden');
             $backButton.classList.remove('block');
         }
-    }
+    };
 });
