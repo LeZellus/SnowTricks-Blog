@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Trick;
-use App\Entity\User;
+use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-#[Route('/trick')]
 class TrickController extends AbstractController
 {
 
@@ -23,7 +23,7 @@ class TrickController extends AbstractController
         $this->security = $security;
     }
 
-    #[Route('/', name: 'trick_index', methods: ['GET'])]
+    #[Route('/trick', name: 'trick_index')]
     public function index(TrickRepository $trickRepository): Response
     {
         return $this->render('trick/index.html.twig', [
@@ -31,7 +31,7 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'trick_new', methods: ['GET', 'POST'])]
+    #[Route('/trick/nouveau', name: 'trick_new')]
     public function new(Request $request): Response
     {
         $trick = new Trick();
@@ -43,9 +43,6 @@ class TrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
-            $trick->setUpdatedAt(new \DateTime());
-            $trick->setCreatedAt(new \DateTime());
 
             if (!$user instanceof \App\Entity\User) {
                 return new Response("FAUX");
@@ -66,15 +63,35 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'trick_show', methods: ['GET'])]
-    public function show(Trick $trick): Response
+    #[Route('/trick/{id}', name: 'trick_show')]
+    public function show(Trick $trick, Request $request): Response
     {
+        $user = $this->getUser();
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+
+            $comment->setTrick($trick);
+            $comment->setUser($user);
+            $comment->setCreatedAt(new \Datetime());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
+
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
+            'formComment' => $commentForm->createView(),
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'trick_edit', methods: ['GET', 'POST'])]
+    #[Route('/trick/edit/{id}', name: 'trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trick $trick): Response
     {
         $form = $this->createForm(TrickType::class, $trick);
@@ -92,14 +109,12 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'trick_delete', methods: ['POST'])]
+    #[Route('/trick/supprimer/{id}', name: 'trick_delete')]
     public function delete(Request $request, Trick $trick): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $trick->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($trick);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($trick);
+        $entityManager->flush();
 
         $this->addFlash("success", "Trick supprimé");
         return $this->redirectToRoute('trick_index');

@@ -3,10 +3,11 @@
 {% block title %}Trick{% endblock %}
 
 {% block body %}
-    <h1>Trick</h1>
+    <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 min-h-[calc(100vh-8rem)]">
+        <h1>Trick</h1>
 
-    <table class="table">
-        <tbody>
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ trick.id }}</td>
@@ -27,12 +28,55 @@
                 <th>UpdatedAt</th>
                 <td>{{ trick.updatedAt ? trick.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <a href="{{ path('trick_index') }}">back to list</a>
+        <a href="{{ path('trick_index') }}">back to list</a>
 
-    <a href="{{ path('trick_edit', {'id': trick.id}) }}">edit</a>
+        <a href="{{ path('trick_edit', {'id': trick.id}) }}">edit</a>
 
-    {{ include('trick/_delete_form.html.twig') }}
+        <div class="w-full border-b-2 border-gray-100 w-full pb-4">
+            <div class="text-indigo-500 font-semibold">{{ trick.comments|length }} Commentaires</div>
+        </div>
+
+        <div class="text-black pt-4 pb-8 antialiased flex w-full">
+            {% if app.user %}
+                {% if app.user.thumb != null %}
+                    <img src="{{ asset('uploads/images/avatars/' ~ app.user.id ~ '/' ~ app.user.thumb) }}"
+                         alt="avatar de {{ app.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
+                {% else %}
+                    <img src="{{ asset('uploads/app/snowboarder.svg') }}" alt="avatar de {{ app.user.pseudonyme }}"
+                         class="rounded-full h-8 w-8 mr-2 mt-1">
+                {% endif %}
+                {% include('trick/includes/_comment_form.html.twig') %}
+            {% else %}
+                <div class="w-full text-center">
+                    Vous devez être
+                    <a href="{{ path('app_register') }}" class="text-indigo-500 font-semibold">inscrit</a>
+                    et
+                    <a href="{{ path('app_login') }}" class="text-indigo-500 font-semibold">connecté</a>
+                    pour pouvoir laisser un commentaire
+                </div>
+            {% endif %}
+        </div>
+
+        {% for comment in trick.comments %}
+            <div class="text-black py-4 antialiased flex w-full">
+                {% if comment.user.thumb != null %}
+                    <img src="{{ asset('uploads/images/avatars/' ~ comment.user.id ~ '/' ~ comment.user.thumb) }}"
+                         alt="avatar de {{ comment.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
+                {% else %}
+                    <img src="{{ asset('uploads/app/snowboarder.svg') }}" alt="avatar de {{ comment.user.pseudonyme }}"
+                         class="rounded-full h-8 w-8 mr-2 mt-1">
+                {% endif %}
+                <div>
+                    <div class="bg-gray-100 rounded-md px-4 pt-2 pb-2.5">
+                        <div class="font-semibold text-sm leading-relaxed text-indigo-500">{{ comment.user.pseudonyme }}</div>
+                        <div class="text-normal leading-snug md:leading-normal">{{ comment.content }}</div>
+                    </div>
+                    <div class="text-xs ml-4 mt-0.5 text-gray-500">{{ comment.createdAt|date("m/d/Y") }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
 {% endblock %}
