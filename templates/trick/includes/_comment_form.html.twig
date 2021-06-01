@@ -1,0 +1,18 @@
+{{ form_start(formComment, {'attr':{'class': 'w-full flex items-center'}}) }}
+    <div class="relative w-full">
+        {{ form_label(formComment.content, 'Commenter', {'label_attr': {'class': 'sr-only'}}) }}
+        {{ form_widget(formComment.content, {
+            'attr': {
+                'class': 'w-full bg-gray-100 border border-transparent rounded-md px-4 py-2.5',
+                'placeholder': 'Ecrivez un commentaire ...'
+            }
+        }) }}
+
+        {{ form_widget(formComment.submit, {
+            'attr': {
+                'class': 'group absolute flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 top-1/2 transform -translate-y-1/2 right-1',
+                'placeholder': 'Ecrivez un commentaire ...'
+            }
+        }) }}
+    </div>
+{{ form_end(formComment) }}

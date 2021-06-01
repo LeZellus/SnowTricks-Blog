@@ -53,13 +53,9 @@ class Trick
     private $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Thumb::class, mappedBy="trick", cascade={"persist"})
-     * @ORM\JoinTable(name="trick_thumb",
-     *  joinColumns={@ORM\JoinColumn(name="trick_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="thumb_id", referencedColumnName="id")}
-     * )
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
      */
-    private Collection $thumbs;
+    private $comments;
 
     public function __construct()
     {
@@ -67,6 +63,7 @@ class Trick
         $this->createdAt = new DateTime();
         $this->updatedAt = new DateTime();
         $this->thumbs = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -103,9 +100,9 @@ class Trick
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTime();
 
         return $this;
     }
@@ -115,9 +112,9 @@ class Trick
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(): self
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new DateTime();
 
         return $this;
     }
@@ -165,29 +162,29 @@ class Trick
     }
 
     /**
-     * @return Collection|Thumb[]
+     * @return Collection|Comment[]
      */
-    public function getThumbs(): Collection
+    public function getComments(): Collection
     {
-        return $this->thumbs;
+        return $this->comments;
     }
 
-    public function addThumb(Thumb $thumb): self
+    public function addComment(Comment $comment): self
     {
-        if (!$this->thumbs->contains($thumb)) {
-            $this->thumbs[] = $thumb;
-            $thumb->setTrick($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
         }
 
         return $this;
     }
 
-    public function removeThumb(Thumb $thumb): self
+    public function removeComment(Comment $comment): self
     {
-        if ($this->thumbs->removeElement($thumb)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($thumb->getTrick() === $this) {
-                $thumb->setTrick(null);
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
             }
         }
 
