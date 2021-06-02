@@ -64,7 +64,7 @@ class ProfilController extends AbstractController
             $uploadedFile = $formUpdateThumb->get('thumb')->getData();
 
             if($uploadedFile){
-                $thumb = $fileUploaderService->profilThumb($uploadedFile, $user);
+                $thumb = $fileUploaderService->uploadThumb($uploadedFile, $user, 'profilThumb');
             }
 
             $user->setThumb($thumb);

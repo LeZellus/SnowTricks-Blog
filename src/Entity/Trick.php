@@ -27,7 +27,7 @@ class Trick
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $description;
 
@@ -56,6 +56,12 @@ class Trick
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
      */
     private $comments;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Thumb::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $mainThumb;
 
     public function __construct()
     {
@@ -187,6 +193,18 @@ class Trick
                 $comment->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMainThumb(): ?Thumb
+    {
+        return $this->mainThumb;
+    }
+
+    public function setMainThumb(Thumb $mainThumb): self
+    {
+        $this->mainThumb = $mainThumb;
 
         return $this;
     }

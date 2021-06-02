@@ -7,6 +7,7 @@ use App\Entity\Trick;
 use App\Form\CommentType;
 use App\Form\TrickType;
 use App\Repository\TrickRepository;
+use App\Service\FileUploaderServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +33,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/nouveau', name: 'trick_new')]
-    public function new(Request $request): Response
+    public function new(Request $request, FileUploaderServiceInterface $fileUploaderService): Response
     {
         $trick = new Trick();
 
@@ -48,6 +49,10 @@ class TrickController extends AbstractController
                 return new Response("FAUX");
             }
 
+            $uploadedMainThumb = $form->get('mainThumb')->getData();
+            $thumb = $fileUploaderService->uploadThumb($uploadedMainThumb, $user, 'mainThumb');
+
+            $trick->setMainThumb($thumb);
             $trick->setUser($user);
 
             $entityManager->persist($trick);

@@ -22,6 +22,12 @@
                         {{ form_widget(form.description, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
                     </div>
                     <div class="col-span-6 sm:col-span-3">
+                        {{ form_label(form.mainThumb, "Image à la une", {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                        {{ form_widget(form.mainThumb, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm'}}) }}
+                    </div>
+
+
+                    <div class="col-span-6 sm:col-span-3">
                         {{ form_label(form.videos, "Vidéos", {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
                         {{ form_errors(form.videos) }}
 
@@ -33,16 +39,16 @@
                                 </li>
                             {% endfor %}
                         </ul>
+                        <button type="button" class="add_item_link" data-collection-holder-class="tags">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
-                <button type="button" class="add_item_link" data-collection-holder-class="tags">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </button>
 
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">

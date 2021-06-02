@@ -4,79 +4,86 @@
 
 {% block body %}
     <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 min-h-[calc(100vh-8rem)]">
-        <h1>Trick</h1>
-
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ trick.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ trick.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ trick.description }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ trick.createdAt ? trick.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ trick.updatedAt ? trick.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <a href="{{ path('trick_index') }}">back to list</a>
-
-        <a href="{{ path('trick_edit', {'id': trick.id}) }}">edit</a>
-
-        <div class="w-full border-b-2 border-gray-100 w-full pb-4">
-            <div class="text-indigo-500 font-semibold">{{ trick.comments|length }} Commentaires</div>
-        </div>
-
-        <div class="text-black pt-4 pb-8 antialiased flex w-full">
-            {% if app.user %}
-                {% if app.user.thumb != null %}
-                    <img src="{{ asset('uploads/images/avatars/' ~ app.user.id ~ '/' ~ app.user.thumb) }}"
-                         alt="avatar de {{ app.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
-                {% else %}
-                    <img src="{{ asset('uploads/app/snowboarder.svg') }}" alt="avatar de {{ app.user.pseudonyme }}"
-                         class="rounded-full h-8 w-8 mr-2 mt-1">
-                {% endif %}
-                {% include('trick/includes/_comment_form.html.twig') %}
-            {% else %}
-                <div class="w-full text-center">
-                    Vous devez être
-                    <a href="{{ path('app_register') }}" class="text-indigo-500 font-semibold">inscrit</a>
-                    et
-                    <a href="{{ path('app_login') }}" class="text-indigo-500 font-semibold">connecté</a>
-                    pour pouvoir laisser un commentaire
-                </div>
-            {% endif %}
-        </div>
-
-        {% for comment in trick.comments %}
-            <div class="text-black py-4 antialiased flex w-full">
-                {% if comment.user.thumb != null %}
-                    <img src="{{ asset('uploads/images/avatars/' ~ comment.user.id ~ '/' ~ comment.user.thumb) }}"
-                         alt="avatar de {{ comment.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
-                {% else %}
-                    <img src="{{ asset('uploads/app/snowboarder.svg') }}" alt="avatar de {{ comment.user.pseudonyme }}"
-                         class="rounded-full h-8 w-8 mr-2 mt-1">
-                {% endif %}
-                <div>
-                    <div class="bg-gray-100 rounded-md px-4 pt-2 pb-2.5">
-                        <div class="font-semibold text-sm leading-relaxed text-indigo-500">{{ comment.user.pseudonyme }}</div>
-                        <div class="text-normal leading-snug md:leading-normal">{{ comment.content }}</div>
-                    </div>
-                    <div class="text-xs ml-4 mt-0.5 text-gray-500">{{ comment.createdAt|date("m/d/Y") }}</div>
+        <div class="max-w-2xl mx-auto pt-8">
+            <div class="relative w-full">
+                <img src="{{ asset('uploads/images/tricks/hiker-4035090_1920.jpg') }}" alt=""
+                     class="w-full rounded-md shadow-md">
+                <div class="absolute right-4 top-4 flex">
+                    <a href="{{ path('trick_edit', {'id': trick.id}) }}" class="bg-indigo-500 p-4 mr-2 rounded-full hover:bg-indigo-700">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                        </svg>
+                    </a>
+                    <a href="{{ path('trick_delete', {'id': trick.id}) }}" class="bg-red-500 p-4 rounded-full hover:bg-indigo-700">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </a>
                 </div>
             </div>
-        {% endfor %}
+
+            <h1 class="text-4xl font-extrabold text-indigo-500 pt-8 mb-2">{{ trick.name }}</h1>
+            <div class="text-gray-400 text-sm mb-8">
+                Crée le
+                <span class="font-semibold">{{ trick.createdAt ? trick.createdAt|date("m/d/Y", "Europe/Paris") : '' }}</span>
+                • Modifié le
+                <span class="font-semibold">{{ trick.updatedAt ? trick.updatedAt|date("m/d/Y", "Europe/Paris") : '' }}</span>
+                par
+                <span class="font-semibold">{{ trick.user }}</span>
+            </div>
+
+            <div>
+                <p class="text-xl my-8">{{ trick.description }}</p>
+            </div>
+
+            <div class="w-full border-b-2 border-gray-100 w-full pb-4">
+                <div class="text-indigo-500 font-semibold">{{ trick.comments|length }} Commentaires</div>
+            </div>
+
+            <div class="text-black pt-4 pb-8 antialiased flex w-full">
+                {% if app.user %}
+                    {% if app.user.thumb != null %}
+                        <img src="{{ asset('uploads/images/avatars/' ~ app.user.id ~ '/' ~ app.user.thumb) }}"
+                             alt="avatar de {{ app.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
+                    {% else %}
+                        <img src="{{ asset('uploads/app/snowboarder.svg') }}" alt="avatar de {{ app.user.pseudonyme }}"
+                             class="rounded-full h-8 w-8 mr-2 mt-1">
+                    {% endif %}
+                    {% include('trick/includes/_comment_form.html.twig') %}
+                {% else %}
+                    <div class="w-full text-center">
+                        Vous devez être
+                        <a href="{{ path('app_register') }}" class="text-indigo-500 font-semibold">inscrit</a>
+                        et
+                        <a href="{{ path('app_login') }}" class="text-indigo-500 font-semibold">connecté</a>
+                        pour pouvoir laisser un commentaire
+                    </div>
+                {% endif %}
+            </div>
+
+            {% for comment in trick.comments %}
+                <div class="text-black py-4 antialiased flex w-full">
+                    {% if comment.user.thumb != null %}
+                        <img src="{{ asset('uploads/images/avatars/' ~ comment.user.id ~ '/' ~ comment.user.thumb) }}"
+                             alt="avatar de {{ comment.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
+                    {% else %}
+                        <img src="{{ asset('uploads/app/snowboarder.svg') }}"
+                             alt="avatar de {{ comment.user.pseudonyme }}"
+                             class="rounded-full h-8 w-8 mr-2 mt-1">
+                    {% endif %}
+                    <div>
+                        <div class="bg-gray-100 rounded-md px-4 pt-2 pb-2.5">
+                            <div class="font-semibold text-sm leading-relaxed text-indigo-500">{{ comment.user.pseudonyme }}</div>
+                            <div class="text-normal leading-snug md:leading-normal">{{ comment.content }}</div>
+                        </div>
+                        <div class="text-xs ml-4 mt-0.5 text-gray-500">{{ comment.createdAt|date("m/d/Y") }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </section>
 {% endblock %}
