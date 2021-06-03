@@ -13,15 +13,21 @@
         <div class="flex justify-center">
             {% if app.user %}
                 <a href="{{ path('trick_new') }}"
-                   class="mx-auto mt-4 mb-10 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Ajouter
+                   class="mx-auto mt-4 mb-10 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Ajouter
                     un Trick</a>
             {% else %}
                 <a href="{{ path('app_register') }}"
-                   class="mx-auto mt-4 mb-10 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Inscription</a>
+                   class="mx-auto mt-4 mb-10 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Inscription</a>
             {% endif %}
         </div>
 
         {% include('trick/includes/_tricks.html.twig') %}
+
+        <div class="flex justify-center">
+            <a href="#" id="loadMore"
+               class="mx-auto mt-4 mb-10 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Charger
+                plus</a>
+        </div>
     </section>
 
     {% block javascripts %}

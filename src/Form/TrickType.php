@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class TrickType extends AbstractType
 {
@@ -18,6 +19,19 @@ class TrickType extends AbstractType
         $builder
             ->add('mainThumb', FileType::class, [
                 'mapped' => false,
+                'required' => false,
+                "constraints" => [
+                    new File([
+                        "maxSize" => "3M",
+                        "mimeTypes" => [
+                            "image/png",
+                            "image/jpg",
+                            "image/jpeg",
+                            "image/gif"
+                        ],
+                        "mimeTypesMessage" => "Veuillez envoyer une image au format png, jpg, jpeg ou gif, de 10 mégas octets maximum"
+                    ])
+                ]
             ])
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
@@ -32,8 +46,7 @@ class TrickType extends AbstractType
                 'label' => false,
                 'required' => false,
                 'prototype' => true,
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,5 +1,4 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
-        avatar_image: '%avatar_directory%'
-        main_image_trick: '%image_directory%'
+        directory_image: '%image_directory%'

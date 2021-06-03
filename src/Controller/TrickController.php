@@ -16,14 +16,6 @@ use Symfony\Component\Security\Core\Security;
 
 class TrickController extends AbstractController
 {
-
-    private $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
-
     #[Route('/trick', name: 'trick_index')]
     public function index(TrickRepository $trickRepository): Response
     {
@@ -36,11 +28,10 @@ class TrickController extends AbstractController
     public function new(Request $request, FileUploaderServiceInterface $fileUploaderService): Response
     {
         $trick = new Trick();
+        $user = $this->getUser();
 
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
-
-        $user = $this->security->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -50,9 +41,9 @@ class TrickController extends AbstractController
             }
 
             $uploadedMainThumb = $form->get('mainThumb')->getData();
-            $thumb = $fileUploaderService->uploadThumb($uploadedMainThumb, $user, 'mainThumb');
+            $mainThumb = $fileUploaderService->uploadThumb($uploadedMainThumb, $trick, 'mainThumb');
 
-            $trick->setMainThumb($thumb);
+            $trick->setMainThumb($mainThumb);
             $trick->setUser($user);
 
             $entityManager->persist($trick);
@@ -81,7 +72,6 @@ class TrickController extends AbstractController
 
             $comment->setTrick($trick);
             $comment->setUser($user);
-            $comment->setCreatedAt(new \Datetime());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
@@ -97,14 +87,24 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/edit/{id}', name: 'trick_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trick $trick): Response
+    public function edit(Request $request, Trick $trick, FileUploaderServiceInterface $fileUploaderService): Response
     {
+        $user = $this->getUser();
+
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            if ($form->get('mainThumb')->getData() != null) {
+                $uploadedMainThumb = $form->get('mainThumb')->getData();
+                $mainThumb = $fileUploaderService->uploadThumb($uploadedMainThumb, $user, 'mainThumb');
 
+                $trick->setMainThumb($mainThumb);
+            } else {
+                $trick->setMainThumb($trick->getMainThumb());
+            }
+
+            $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('trick_index');
         }
 

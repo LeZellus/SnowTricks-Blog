@@ -4,7 +4,6 @@
 namespace App\Service;
 
 use App\Entity\Thumb;
-use App\Repository\TrickRepository;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -20,7 +19,7 @@ class FileUploaderService implements FileUploaderServiceInterface
         $this->slugger = $slugger;
     }
 
-    public function uploadThumb(UploadedFile $file, $user, $imageType): Thumb
+    public function uploadThumb(UploadedFile $file, $param, $imageType): Thumb
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
 
@@ -28,26 +27,26 @@ class FileUploaderService implements FileUploaderServiceInterface
             $fileName = 'avatar.' . $file->guessExtension();
 
             /** Check if user already get image  */
-            if (!$user->getThumb()) {
+            if (!$param->getThumb()) {
                 $thumb = new Thumb();
             } else {
-                $thumb = $user->getThumb();
+                $thumb = $param->getThumb();
             }
 
             /** Save the file into user pseudo name folder  */
             try {
-                $file->move($this->getTargetDirectory() . $user->getId(), $fileName);
+                $file->move($this->getTargetDirectory() . 'avatars/' . $param->getId(), $fileName);
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
 
         } elseif ($imageType == 'mainThumb') {
             $thumb = new Thumb();
-            $fileName = $this->slugger->slug($originalFilename);
+            $fileName = $this->slugger->slug($originalFilename). uniqid() . '.' . $file->guessExtension();
 
             /** Save the file into user pseudo name folder  */
             try {
-                $file->move($this->getTargetDirectory() . 'tricks', $fileName);
+                $file->move($this->getTargetDirectory() . 'tricks/' . $param->getId(), $fileName);
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }

@@ -24,6 +24,7 @@
                     <div class="col-span-6 sm:col-span-3">
                         {{ form_label(form.mainThumb, "Image à la une", {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
                         {{ form_widget(form.mainThumb, {'attr': {'class': 'mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm'}}) }}
+                        {{ form_errors(form.mainThumb, {'attr': {'class': 'text-red-500'}}) }}
                     </div>
 
 

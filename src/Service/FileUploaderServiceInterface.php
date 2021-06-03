@@ -7,5 +7,5 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface FileUploaderServiceInterface
 {
-    public function uploadThumb(UploadedFile $file, $user,string $typeThumb): Thumb;
+    public function uploadThumb(UploadedFile $file, $entity ,string $typeThumb): Thumb;
 }
