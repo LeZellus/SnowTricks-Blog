@@ -46,7 +46,7 @@ class FileUploaderService implements FileUploaderServiceInterface
 
             /** Save the file into user pseudo name folder  */
             try {
-                $file->move($this->getTargetDirectory() . 'tricks/' . $param->getId(), $fileName);
+                $file->move($this->getTargetDirectory() . 'tricks/', $fileName);
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
