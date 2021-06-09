@@ -26,8 +26,8 @@ class ProfilController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $address = $user->getAddress();
         $thumb = $user->getThumb();
+        $address = $user->getAddress() ? $user->getAddress() : new Address();
 
         $formUpdateUser = $this->createForm(UserInfoType::class, $user);
         $formUpdateUser->handleRequest($request);
@@ -47,12 +47,8 @@ class ProfilController extends AbstractController
         }
 
         if ($formUpdateAddress->isSubmitted() && $formUpdateAddress->isValid()) {
-            if (!$address) {
-                $address = new Address();
-            }
-            $em->persist($address);
-
-            $user->setAddress($address);
+            $formAddress = $formUpdateAddress->getData();
+            $user->setAddress($formAddress);
             $em->persist($user);
             $em->flush();
 

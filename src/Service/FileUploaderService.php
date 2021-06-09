@@ -19,44 +19,37 @@ class FileUploaderService implements FileUploaderServiceInterface
         $this->slugger = $slugger;
     }
 
-    public function uploadThumb(UploadedFile $file, $param, $imageType): Thumb
+    public function uploadThumb(UploadedFile $uploadedFile, $param, $imageType): Thumb
     {
-        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+        $fileType = $uploadedFile->getClientOriginalExtension();
 
         if ($imageType == 'profilThumb') {
-            $fileName = 'avatar.' . $file->guessExtension();
-
-            /** Check if user already get image  */
-            if (!$param->getThumb()) {
-                $thumb = new Thumb();
-            } else {
-                $thumb = $param->getThumb();
-            }
+            $fileName = 'avatar.' . $uploadedFile->guessExtension();
+            $thumb = $param->getThumb() ? $param->getThumb() : new Thumb();
 
             /** Save the file into user pseudo name folder  */
             try {
-                $file->move($this->getTargetDirectory() . 'avatars/' . $param->getId(), $fileName);
+                $uploadedFile->move($this->getTargetDirectory() . 'avatars/' . $param->getId(), $fileName);
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
 
         } elseif ($imageType == 'mainThumb') {
-            $thumb = new Thumb();
-            $fileName = $this->slugger->slug($originalFilename). uniqid() . '.' . $file->guessExtension();
+            $thumb = $param->getMainThumb() ? $param->getMainThumb() : new Thumb();
+            $fileName = $this->slugger->slug($originalFilename). uniqid() . '.' . $uploadedFile->guessExtension();
 
             /** Save the file into user pseudo name folder  */
             try {
-                $file->move($this->getTargetDirectory() . 'tricks/', $fileName);
+                $uploadedFile->move($this->getTargetDirectory() . 'tricks/', $fileName);
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
         }
 
-        $type = $file->getClientOriginalExtension();
-
         $thumb->setOldName($originalFilename);
         $thumb->setNewName($fileName);
-        $thumb->setType($type);
+        $thumb->setType($fileType);
 
         return $thumb;
     }
