@@ -89,20 +89,13 @@ class TrickController extends AbstractController
     #[Route('/trick/edit/{id}', name: 'trick_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Trick $trick, FileUploaderServiceInterface $fileUploaderService): Response
     {
-        $user = $this->getUser();
-
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('mainThumb')->getData() != null) {
-                $uploadedMainThumb = $form->get('mainThumb')->getData();
-                $mainThumb = $fileUploaderService->uploadThumb($uploadedMainThumb, $user, 'mainThumb');
-
-                $trick->setMainThumb($mainThumb);
-            } else {
-                $trick->setMainThumb($trick->getMainThumb());
-            }
+            $uploadedFile = $form->get('mainThumb')->getData();
+            $mainThumb = $fileUploaderService->uploadThumb($uploadedFile, $trick, 'mainThumb');
+            $trick->setMainThumb($mainThumb);
 
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('trick_index');
