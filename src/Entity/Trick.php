@@ -58,10 +58,9 @@ class Trick
     private $comments;
 
     /**
-     * @ORM\OneToOne(targetEntity=Thumb::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Thumb::class, mappedBy="trick")
      */
-    private $mainThumb;
+    private $thumbs;
 
     public function __construct()
     {
@@ -197,14 +196,32 @@ class Trick
         return $this;
     }
 
-    public function getMainThumb(): ?Thumb
+    /**
+     * @return Collection|Thumb[]
+     */
+    public function getThumbs(): Collection
     {
-        return $this->mainThumb;
+        return $this->thumbs;
     }
 
-    public function setMainThumb(Thumb $mainThumb): self
+    public function addThumb(Thumb $thumb): self
     {
-        $this->mainThumb = $mainThumb;
+        if (!$this->thumbs->contains($thumb)) {
+            $this->thumbs[] = $thumb;
+            $thumb->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeThumb(Thumb $thumb): self
+    {
+        if ($this->thumbs->removeElement($thumb)) {
+            // set the owning side to null (unless already changed)
+            if ($thumb->getTrick() === $this) {
+                $thumb->setTrick(null);
+            }
+        }
 
         return $this;
     }

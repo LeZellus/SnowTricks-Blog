@@ -19,25 +19,34 @@ class FileUploaderService implements FileUploaderServiceInterface
         $this->slugger = $slugger;
     }
 
-    public function uploadThumb(UploadedFile $uploadedFile, $param, $imageType): Thumb
+    /**
+     * @param UploadedFile $uploadedFile
+     * @param $paramEntity
+     * @param string $uploadType
+     * @return Thumb
+     */
+    public function uploadThumb(UploadedFile $uploadedFile, $paramEntity, string $uploadType): Thumb
     {
         $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
         $fileType = $uploadedFile->getClientOriginalExtension();
 
-        if ($imageType == 'profilThumb') {
+
+        if ($uploadType == "profilThumb") {
+            $thumb = $paramEntity->getThumb() ? $paramEntity->getThumb() : new Thumb();
             $fileName = 'avatar.' . $uploadedFile->guessExtension();
-            $thumb = $param->getThumb() ? $param->getThumb() : new Thumb();
 
             /** Save the file into user pseudo name folder  */
             try {
-                $uploadedFile->move($this->getTargetDirectory() . 'avatars/' . $param->getId(), $fileName);
+                $uploadedFile->move($this->getTargetDirectory() . 'avatars/' . $paramEntity->getId(), $fileName);
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
 
-        } elseif ($imageType == 'mainThumb') {
-            $thumb = $param->getMainThumb() ? $param->getMainThumb() : new Thumb();
-            $fileName = $this->slugger->slug($originalFilename). uniqid() . '.' . $uploadedFile->guessExtension();
+            $thumb->setIsMain(false);
+
+        } elseif ($uploadType == "mainThumb") {
+            $thumb = new Thumb();
+            $fileName = $this->slugger->slug($originalFilename) . uniqid() . '.' . $uploadedFile->guessExtension();
 
             /** Save the file into user pseudo name folder  */
             try {
@@ -45,11 +54,39 @@ class FileUploaderService implements FileUploaderServiceInterface
             } catch (FileException $e) {
                 // ... handle exception if something happens during file upload
             }
-        }
 
-        $thumb->setOldName($originalFilename);
+            $thumb->setIsMain(false);
+        };
+
         $thumb->setNewName($fileName);
         $thumb->setType($fileType);
+
+        return $thumb;
+    }
+
+    /**
+     * @param Thumb $thumb
+     * @return Thumb
+     */
+    public function saveImage(Thumb $thumb): Thumb
+    {
+        $uploadedFile = $thumb->getFile();
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = $this->slugger->slug($originalFilename);
+        $fileType = $uploadedFile->getClientOriginalExtension();
+        $fileName = $safeFilename . '-' . md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+        //$path= $this->getTargetDirectory() . 'tricks/';
+
+        try {
+            $uploadedFile->move($this->getTargetDirectory() . 'tricks/', $fileName);
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
+
+        // Donner le path et le nom au fichier dans la base de données
+        $thumb->setType($fileType);
+        $thumb->setNewName($fileName);
+        $thumb->setPath($originalFilename);
 
         return $thumb;
     }
