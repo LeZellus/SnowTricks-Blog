@@ -1,7 +1,31 @@
-var $ = require('jQuery');
+let $ = require('jQuery');
+
+function addFormToCollection($collectionHolderClass) {
+    let $collectionHolder = $('.' + $collectionHolderClass);
+    let prototype = $collectionHolder.data('prototype');
+    let index = $collectionHolder.data('index');
+    let newForm = prototype;
+
+    newForm = newForm.replace(/__name__/g, index);
+    $collectionHolder.data('index', index + 1);
+
+    let $newFormLi = $('<li></li>').append(newForm);
+
+    $collectionHolder.append($newFormLi);
+    addTagFormDeleteLink($newFormLi);
+}
+
+function addTagFormDeleteLink($tagFormLi) {
+    let $removeFormButton = $('<button type="button" class="text-red-400 text-sm">Retirer</button>');
+    $tagFormLi.append($removeFormButton);
+
+    $removeFormButton.on('click', function (e) {
+        $tagFormLi.remove();
+    });
+}
 
 $(document).ready(function () {
-    $collectionHolder = $('ul.videos');
+    let $collectionHolder = $('ul.videos');
 
     $collectionHolder.find('li').each(function () {
         addTagFormDeleteLink($(this));
@@ -11,31 +35,6 @@ $(document).ready(function () {
 
     $('body').on('click', '.add_video', function (e) {
         var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
-        console.log($collectionHolderClass)
         addFormToCollection($collectionHolderClass);
     })
 });
-
-function addFormToCollection($collectionHolderClass) {
-    var $collectionHolder = $('.' + $collectionHolderClass);
-    var prototype = $collectionHolder.data('prototype');
-    var index = $collectionHolder.data('index');
-    var newForm = prototype;
-
-    newForm = newForm.replace(/__name__/g, index);
-    $collectionHolder.data('index', index + 1);
-
-    var $newFormLi = $('<li></li>').append(newForm);
-
-    $collectionHolder.append($newFormLi);
-    addTagFormDeleteLink($newFormLi);
-}
-
-function addTagFormDeleteLink($tagFormLi) {
-    var $removeFormButton = $('<button type="button" class="text-red-400 text-sm">Retirer</button>');
-    $tagFormLi.append($removeFormButton);
-
-    $removeFormButton.on('click', function (e) {
-        $tagFormLi.remove();
-    });
-}
