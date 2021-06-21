@@ -9,10 +9,10 @@ use App\Form\TrickType;
 use App\Repository\TrickRepository;
 use App\Service\FileUploaderServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 class TrickController extends AbstractController
 {
@@ -40,12 +40,15 @@ class TrickController extends AbstractController
                 return new Response("FAUX");
             }
 
-            $uploadedMainThumb = $form->get('mainThumb')->getData();
-            $mainThumb = $fileUploaderService->uploadThumb($uploadedMainThumb, $trick, 'mainThumb');
+            foreach ($trick->getThumbs() as $thumb) {
+                $thumb = $fileUploaderService->saveImage($thumb);
+                $thumb->setTrick($trick);
+                $thumb->setUser($user);
 
-            $trick->setMainThumb($mainThumb);
+                $entityManager->persist($thumb);
+            }
+
             $trick->setUser($user);
-
             $entityManager->persist($trick);
             $entityManager->flush();
 
@@ -93,7 +96,7 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFile = $form->get('mainThumb')->getData();
+            $uploadedFile = $form->get('thumbs')->getData();
             $mainThumb = $fileUploaderService->uploadThumb($uploadedFile, $trick, 'mainThumb');
             $trick->setMainThumb($mainThumb);
 

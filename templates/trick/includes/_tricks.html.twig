@@ -2,7 +2,7 @@
     {% for trick in tricks %}
         <div class="overflow-hidden transition-shadow duration-300 rounded trick-card hidden">
             <a href="{{ path('trick_show', {'id': trick.id}) }}" aria-label="Article"><img
-                        src="{{ asset('uploads/images/tricks/' ~ trick.mainThumb) }}"
+                        src=""
                         class="object-cover w-full h-52 rounded" alt=""/></a>
             <div class="py-5">
                 <p class="mb-2 text-xs font-semibold text-gray-600 uppercase">{{ trick.createdAt ? trick.createdAt|format_datetime('short', locale='fr',pattern="dd MMMM YY") : '' }}</p>
