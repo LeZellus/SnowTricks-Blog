@@ -71,10 +71,12 @@ class TrickController extends AbstractController
         $commentForm = $this->createForm(CommentType::class, $comment);
         $commentForm->handleRequest($request);
 
+
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
 
             $comment->setTrick($trick);
             $comment->setUser($user);
+            $comment->setCreatedAt(new \DateTime());
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
@@ -90,16 +92,12 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trick/edit/{id}', name: 'trick_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Trick $trick, FileUploaderServiceInterface $fileUploaderService): Response
+    public function edit(Trick $trick, Request $request): Response
     {
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFile = $form->get('thumbs')->getData();
-            $mainThumb = $fileUploaderService->uploadThumb($uploadedFile, $trick, 'mainThumb');
-            $trick->setMainThumb($mainThumb);
-
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('trick_index');
         }

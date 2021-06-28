@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -83,12 +84,12 @@ class Comment
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->createdAt;
+        return $this->createdAt ?? new DateTime();
     }
 
-    public function setCreatedAt(): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
-        $this->createdAt = new DateTime();
+        $this->createdAt = $createdAt;
 
         return $this;
     }

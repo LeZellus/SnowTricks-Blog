@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trick{% endblock %}
+{% block title %}{{ trick.name }} | {{ parent() }}{% endblock %}
 
 {% block body %}
     <section class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 min-h-[calc(100vh-8rem)]">
@@ -43,6 +43,12 @@
                 <span class="font-semibold">{{ trick.user }}</span>
             </div>
 
+            <div class="text-black py-4 antialiased grid w-full grid-cols-4">
+                {% for thumb in trick.thumbs %}
+                    <img class="rounded-lg mx-auto" src="{{ asset('uploads/images/tricks/') ~ thumb.newName }}" alt="">
+                {% endfor %}
+            </div>
+
             <div>
                 <p class="text-xl my-8">{{ trick.description }}</p>
             </div>
@@ -72,25 +78,33 @@
                 {% endif %}
             </div>
 
-            {% for comment in trick.comments %}
-                <div class="text-black py-4 antialiased flex w-full">
-                    {% if comment.user.thumb != null %}
-                        <img src="{{ asset('uploads/images/avatars/' ~ comment.user.id ~ '/' ~ comment.user.thumb) }}"
-                             alt="avatar de {{ comment.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
-                    {% else %}
-                        <img src="{{ asset('uploads/app/snowboarder.svg') }}"
-                             alt="avatar de {{ comment.user.pseudonyme }}"
-                             class="rounded-full h-8 w-8 mr-2 mt-1">
-                    {% endif %}
-                    <div>
-                        <div class="bg-gray-100 rounded-md px-4 pt-2 pb-2.5">
-                            <div class="font-semibold text-sm leading-relaxed text-indigo-500">{{ comment.user.pseudonyme }}</div>
-                            <div class="text-normal leading-snug md:leading-normal">{{ comment.content }}</div>
+            <div class="wrapper-comment">
+                {% for comment in trick.comments %}
+                    <div class="text-black py-4 antialiased flex w-full comment-item">
+                        {% if comment.user.thumb != null %}
+                            <img src="{{ asset('uploads/images/avatars/' ~ comment.user.id ~ '/' ~ comment.user.thumb) }}"
+                                 alt="avatar de {{ comment.user.pseudonyme }}" class="rounded-full h-8 w-8 mr-2 mt-1">
+                        {% else %}
+                            <img src="{{ asset('uploads/app/snowboarder.svg') }}"
+                                 alt="avatar de {{ comment.user.pseudonyme }}"
+                                 class="rounded-full h-8 w-8 mr-2 mt-1">
+                        {% endif %}
+                        <div>
+                            <div class="bg-gray-100 rounded-md px-4 pt-2 pb-2.5">
+                                <div class="font-semibold text-sm leading-relaxed text-indigo-500">{{ comment.user.pseudonyme }}</div>
+                                <div class="text-normal leading-snug md:leading-normal">{{ comment.content }}</div>
+                            </div>
+                            <div class="text-xs ml-4 mt-0.5 text-gray-500">{{ comment.createdAt|date("m/d/Y") }}</div>
                         </div>
-                        <div class="text-xs ml-4 mt-0.5 text-gray-500">{{ comment.createdAt|date("m/d/Y") }}</div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+                <div id="pagination-container"></div>
+            </div>
         </div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('comments') }}
 {% endblock %}

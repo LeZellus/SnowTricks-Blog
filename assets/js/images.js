@@ -1,7 +1,5 @@
 let $ = require('jQuery');
 
-console.log('image ok');
-
 function addFormToCollection($collectionHolderClass) {
     let $collectionHolder = $('.' + $collectionHolderClass);
     let prototype = $collectionHolder.data('prototype');

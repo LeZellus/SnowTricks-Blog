@@ -24,6 +24,7 @@ Encore
     .addEntry('smooth', './assets/js/smooth.js')
     .addEntry('images', './assets/js/images.js')
     .addEntry('videos', './assets/js/videos.js')
+    .addEntry('comments', './assets/js/comment-pagination.js')
     .addEntry('load-more', './assets/js/load-more.js')
     .addStyleEntry("tailwind", "./assets/styles/tailwind.css")
 
