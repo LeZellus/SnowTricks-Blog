@@ -5,11 +5,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700;800&display=swap');
 
 @layer utilities {
-  .bg-success-500{
+  .bg-success-500 {
     @apply bg-green-500;
   }
 
-  .bg-error-500{
+  .bg-error-500 {
     @apply bg-green-500;
   }
 
@@ -22,8 +22,27 @@
   }
 }
 
-.text-shadow{
+.text-shadow {
   text-shadow: -15px 5px 20px #888888;
+}
+
+.fade {
+  height: 4.5rem;
+}
+
+.fade:after {
+  content: "";
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40%;
+  height: 1.2em;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(249, 250, 251, 1) 50%);
+}
+
+.pagination-container {
+  @apply bg-red-400;
 }
 
 
